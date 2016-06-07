@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "noImplicitAny": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "ES5",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    "declaration": true
+  },
+  "files": [
+    "typings/index.d.ts",
+    "ng2-stormpath.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
