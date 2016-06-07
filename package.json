@@ -21,7 +21,7 @@
     "angular",
     "angular2"
   ],
-  "license": "MIT",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/stormpath/stormpath-sdk-angularjs2/issues"
   },
