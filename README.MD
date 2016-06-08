@@ -8,7 +8,7 @@ This library is not yet on NPM, you should clone this library and then prepare
 it for symlinking:
 
 ```bash
-git clone git@github.com:stormpath/stormpath-sdk-angular2.git
+git clone git@github.com:robertjd/sp-ng2.git
 npm link
 ```
 
