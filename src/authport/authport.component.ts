@@ -41,7 +41,7 @@ import { Stormpath, LoginService } from '../stormpath/stormpath.service';
               <div class="panel-heading">
                 <h4>
                   <ul class="nav nav-pills">
-                    <li role="presentation" [ngClass]="{active:loginService.login}" (click)="showLogin()"><a href="#">Sign In</a></li>
+                    <li role="presentation" [ngClass]="{active:loginService.login || loginService.forgot}" (click)="showLogin()"><a href="#">Sign In</a></li>
                     <li role="presentation" [ngClass]="{active:loginService.register}" (click)="showRegister()" class="pull-right"><a>Register</a></li>
 
                   </ul>
