@@ -24,6 +24,20 @@ At the moment we have an example, in the example folder, of how to configure
 this library if you are using SystemJS.  We will investigate other package
 loaders in the future.
 
+## Incuding in your project
+
+You will want to import the module like this:
+
+```
+import {
+  Account,
+  AuthPortComponent,
+  Stormpath
+} from 'ng2-stormpath/ng2-stormpath';
+```
+
+To see how these components can be used, see the example/ folder in this project.
+
 ## Development
 
 To generate all `*.js`, `*.js.map` and `*.d.ts` files:
