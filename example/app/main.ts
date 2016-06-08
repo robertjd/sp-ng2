@@ -3,4 +3,4 @@ import { ROUTER_PROVIDERS } from '@angular/router';
 
 import { AppComponent } from './app.component';
 
-bootstrap(AppComponent, [ROUTER_PROVIDERS]);
+bootstrap(AppComponent, [ ROUTER_PROVIDERS ]);
