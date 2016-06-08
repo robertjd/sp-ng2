@@ -74,6 +74,22 @@ export interface StormpathErrorResponse {
   message: string;
 }
 
+export class LoginService {
+  public forgot: boolean;
+  public login: boolean;
+  public register: boolean;
+  constructor() {
+    this.forgot = false;
+    this.login = true;
+    this.register = false;
+  }
+  forgotPassword() {
+    this.forgot = true;
+    this.login = false;
+  }
+}
+
+
 @Injectable()
 export class Stormpath {
 

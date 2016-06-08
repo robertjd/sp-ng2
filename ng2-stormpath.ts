@@ -1,5 +1,6 @@
 import { Stormpath } from './src/stormpath/index';
 
+export * from './src/authport/index';
 export * from './src/email-verification/index';
 export * from './src/forgot-password/index';
 export * from './src/login/index';

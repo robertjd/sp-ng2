@@ -3,16 +3,38 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { Account } from '../shared/account';
-import { Stormpath, LoginFormModel, StormpathErrorResponse } from '../stormpath/stormpath.service';
+import {
+  Stormpath, LoginFormModel, LoginService, StormpathErrorResponse
+} from '../stormpath/stormpath.service';
 
 @Component({
   selector: 'login-form',
   template: `
-    <form *ngIf="(user$|async) == false">
-      <input type="text" [(ngModel)]="loginFormModel.login">
-      <input type="password" [(ngModel)]="loginFormModel.password">
-      <div *ngIf="error">{{error}}</div>
-      <button (click)="login()">Login</button>
+    <form class="form-horizontal">
+      <div class="form-group">
+        <label for="loginField" class="col-sm-3 control-label">Email</label>
+        <div class="col-sm-9">
+          <input class="form-control" id="loginField" type="text" [(ngModel)]="loginFormModel.login">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="passwordField" class="col-sm-3 control-label">Password</label>
+        <div class="col-sm-9">
+          <input class="form-control" id="passwordField" type="password" [(ngModel)]="loginFormModel.password">
+        </div>
+      </div>
+
+
+      <div class="form-group">
+
+        <div class="col-xs-10 col-xs-offset-3 text-left">
+          <a href="#" (click)="forgot()">&nbsp;Forgot Password?</a>
+        </div>
+      </div>
+
+
+      <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+      <button (click)="login()" class="btn btn-primary pull-right">Login</button>
     </form>
   `
 })
@@ -22,7 +44,8 @@ export class LoginComponent implements OnInit {
   protected user$: Observable<Account | boolean>;
   protected loggedIn$: Observable<boolean>;
   protected error: string;
-  constructor(public stormpath: Stormpath) {
+
+  constructor(public stormpath: Stormpath, public loginService: LoginService) {
 
   }
   ngOnInit() {
@@ -39,5 +62,8 @@ export class LoginComponent implements OnInit {
       .subscribe(null, (error: StormpathErrorResponse) => {
         this.error = error.message;
       });
+  }
+  forgot() {
+    this.loginService.forgotPassword();
   }
 };

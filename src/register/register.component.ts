@@ -9,15 +9,15 @@ import { Stormpath, LoginFormModel, RegistrationFormModel } from '../stormpath/s
 @Component({
   selector: 'register-form',
   template: `
-    <form *ngIf="!registered" (ngSubmit)="onSubmit()">
+    <form *ngIf="!registered" (ngSubmit)="onSubmit()" class="form-horizontal">
       <div class="form-group" *ngFor="let field of model?.form?.fields">
-        <label [attr.for]="field.name" class="col-xs-12 col-sm-4 control-label">{{field.label}}</label>
-        <div class="col-xs-12 col-sm-4">
+        <label [attr.for]="field.name" class="col-sm-4 control-label">{{field.label}}</label>
+        <div class="col-sm-8">
           <input class="form-control" [name]="field.name" [id]="field.name" [type]="field.type" [(ngModel)]="formModel[field.name]" [placeholder]="field.placeholder" [disabled]="creating" [required]="field.required">
         </div>
       </div>
-      <div *ngIf="error">{{error}}</div>
-      <button type="submit">Register</button>
+      <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+      <button type="submit" class="btn btn-primary">Register</button>
     </form>
     <p *ngIf="unverified" class="alert alert-success">
       Your account has been created and requires verification.
