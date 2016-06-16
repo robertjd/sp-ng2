@@ -21,7 +21,7 @@ import { RegisterComponent } from '../register/register.component';
 import { Stormpath, LoginService } from '../stormpath/stormpath.service';
 
 @Component({
-  selector: 'sp-authport',
+  selector: 'sp-auth-portal',
   template: `
       <div class="container">
         <br/>
@@ -29,14 +29,14 @@ import { Stormpath, LoginService } from '../stormpath/stormpath.service';
 
 
         <div class="row" *ngIf="(user$ | async) === false">
-          <div class="col-xs-12 col-sm-offset-3 col-sm-6">
+          <div class="col-xs-12 col-sm-offset-3 col-sm-6 col-lg-offset-4 col-lg-4">
 
 
             <h1 class="text-center">Hello</h1>
 
             <br/>
           </div>
-          <div class="col-xs-12 col-sm-offset-3 col-sm-6">
+          <div class="col-xs-12 col-sm-offset-3 col-sm-6 col-lg-offset-4 col-lg-4">
             <div class="panel panel-default">
               <div class="panel-heading">
                 <h4>
@@ -78,7 +78,7 @@ import { Stormpath, LoginService } from '../stormpath/stormpath.service';
   ]
 })
 @Injectable()
-export class AuthPortComponent implements OnInit {
+export class AuthPortalComponent implements OnInit {
   private user$: Observable<Account | boolean>;
   private loggedIn$: Observable<boolean>;
   private login: boolean;

@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 
 import {
   Account,
-  AuthPortComponent,
+  AuthPortalComponent,
   Stormpath
 } from 'ng2-stormpath/ng2-stormpath';
 
@@ -30,13 +30,13 @@ import {
           </ul>
         </div>
 
-        <sp-authport></sp-authport>
+        <sp-auth-portal></sp-auth-portal>
 
       </div>
     `,
   providers: [HTTP_PROVIDERS, Stormpath],
   directives: [
-    AuthPortComponent
+    AuthPortalComponent
   ]
 })
 export class AppComponent implements OnInit {
