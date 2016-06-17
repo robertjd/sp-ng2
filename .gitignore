@@ -8,6 +8,9 @@ npm-debug.log
 *.d.ts
 typings/**
 
+# Example
+!example/server/*.js
+
 # JetBrains
 .idea
 .project

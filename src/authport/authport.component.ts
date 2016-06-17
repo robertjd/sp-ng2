@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
@@ -79,6 +79,10 @@ import { Stormpath, LoginService } from '../stormpath/stormpath.service';
 })
 @Injectable()
 export class AuthPortalComponent implements OnInit {
+
+  @Input() appId: string;
+  @Input() baseUrl: string;
+
   private user$: Observable<Account | boolean>;
   private loggedIn$: Observable<boolean>;
   private login: boolean;
@@ -87,19 +91,18 @@ export class AuthPortalComponent implements OnInit {
 
 
   constructor(public stormpath: Stormpath, public loginService: LoginService) {
-
-
-
     this.user$ = this.stormpath.user$;
     this.loggedIn$ = this.user$.map(user => !!user);
   }
   ngOnInit() {
-
+    this.stormpath.appId = this.appId;
+    this.stormpath.baseUrl = this.baseUrl || 'https://api.stormpath.com';
     this.loginService.login = true;
     this.loginService.register = false;
     this.forgot = this.loginService.forgot;
     this.user$ = this.stormpath.user$;
     this.loggedIn$ = this.user$.map(user => !!user);
+    this.stormpath.getAccount();
   }
 
   showLogin() {

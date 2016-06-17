@@ -30,11 +30,11 @@ import {
           </ul>
         </div>
 
-        <sp-auth-portal></sp-auth-portal>
+        <sp-auth-portal appId="24k7HnDOz4tQ9ARsBtPUN6" baseUrl="http://localhost:4000"></sp-auth-portal>
 
       </div>
     `,
-  providers: [HTTP_PROVIDERS, Stormpath],
+  providers: [HTTP_PROVIDERS, Stormpath ],
   directives: [
     AuthPortalComponent
   ]

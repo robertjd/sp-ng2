@@ -29,6 +29,24 @@ class JsonPostOptions extends JsonGetOptions {
   }
 }
 
+class AuthenticatedJsonRequest extends JsonGetOptions {
+  constructor(accessToken: string) {
+    super();
+    this.headers.append('Authorization', 'Bearer ' + accessToken);
+  }
+}
+
+class OAuthTokenPostOptions extends RequestOptions {
+  constructor() {
+    super({
+      headers: new Headers({
+        'Accept': APPLICATION_JSON,
+        'Content-Type': 'application/x-www-form-urlencoded'
+      })
+    });
+  }
+}
+
 export function defaultSpTokenResolver(location: Location): string {
   let m = location.path().match(/sptoken=([^&]+)/);
   return m && m.length === 2 ? m[1] : '';
@@ -93,16 +111,25 @@ export class LoginService {
 @Injectable()
 export class Stormpath {
 
+  appId: string;
+  baseUrl: string;
   user$: Observable<Account | boolean>;
+  private accessToken: string = '';
+  private refreshToken: string = '';
   private userSource: ReplaySubject<Account | boolean>;
 
-  constructor(public http: Http) {
+
+  constructor(public http: Http ) {
+
+    this.appId = '';
+    this.baseUrl = '';
     this.userSource = new ReplaySubject<Account>(1);
     this.user$ = this.userSource.asObservable();
-    this.getAccount()
-      .subscribe(user => this.userSource.next(user));
+    this.accessToken = localStorage.getItem('accessToken');
+    this.refreshToken = localStorage.getItem('refreshToken');
+    // this.getAccount()
+    //   .subscribe(user => this.userSource.next(user));
   }
-
 
   /**
    * Attempts to get the current user by making a request of the /me endpoint.
@@ -112,7 +139,12 @@ export class Stormpath {
    * if the user is not logged in.
    */
   getAccount(): Observable<Account> {
-    return this.http.get('/me', new JsonGetOptions())
+    let observable = this.http.get(
+        this.buildUrl('/me'),
+        this.appId ?
+          new AuthenticatedJsonRequest(this.accessToken) :
+            new JsonGetOptions()
+       )
       .map(this.jsonParser)
       .map(this.accountTransformer)
       .catch((error: any) => {
@@ -124,10 +156,12 @@ export class Stormpath {
         }
         return Observable.throw(error);
       });
+    observable.subscribe(user => this.userSource.next(user));
+    return observable;
   }
 
   getRegistrationViewModel() {
-    return this.http.get('/register', new JsonGetOptions())
+    return this.http.get(this.buildUrl('/register'), new JsonGetOptions())
       .map(this.jsonParser)
       .catch(this.errorTranslator);
   }
@@ -140,7 +174,7 @@ export class Stormpath {
    * An observable that will return an Account if the POST was successful.
    */
   register(form: Object): Observable<Account> {
-    let observable = this.http.post('/register', JSON.stringify(form), new JsonPostOptions())
+    let observable = this.http.post(this.buildUrl('/register'), JSON.stringify(form), new JsonPostOptions())
       .map(this.jsonParser)
       .map(this.accountTransformer)
       .catch(this.errorTranslator)
@@ -149,51 +183,78 @@ export class Stormpath {
   }
 
   login(form: LoginFormModel) {
-    let observable = this.http.post('/login', JSON.stringify(form), new JsonPostOptions())
-      .map(this.jsonParser)
-      .map(this.accountTransformer)
-      .catch(this.errorTranslator)
-      .share();
+    if (this.appId) {
 
-    observable.subscribe(user => this.userSource.next(user), () => { });
-    return observable;
+      let data = 'grant_type=password&username=' + form.login + '&password=' + form.password;
 
+      let observable = this.http.post(this.buildUrl('/oauth/token'), data, new OAuthTokenPostOptions())
+        .map(this.jsonParser)
+        .map(this.accessTokenParser)
+        .map(this.accountTransformer)
+        .catch(this.errorTranslator)
+        .share();
+
+      observable.subscribe(user => this.userSource.next(user), () => { });
+      return observable;
+    } else {
+
+      let observable = this.http.post(this.buildUrl('/login'), JSON.stringify(form), new JsonPostOptions())
+        .map(this.jsonParser)
+        .map(this.accountTransformer)
+        .catch(this.errorTranslator)
+        .share();
+
+      observable.subscribe(user => this.userSource.next(user), () => { });
+      return observable;
+    }
   }
 
   logout() {
-    this.http.post('/logout', null, new JsonGetOptions())
+    this.refreshToken = this.accessToken = '';
+    localStorage.setItem('accessToken', '');
+    localStorage.setItem('refreshToken', '');
+    this.http.post(this.buildUrl('/logout'), null, new JsonGetOptions())
       .catch(this.errorThrower)
       .subscribe(() => this.userSource.next(false));
   }
 
+
   resendVerificationEmail(request: ResendEmailVerificationRequest) {
-    return this.http.post('/verify', JSON.stringify(request), new JsonPostOptions())
+    return this.http.post(this.buildUrl('/verify'), JSON.stringify(request), new JsonPostOptions())
       .map(this.jsonParser)
       .catch(this.errorTranslator);
   }
 
   sendPasswordResetEmail(form: ForgotPasswordFormModel) {
-    return this.http.post('/forgot', JSON.stringify(form), new JsonPostOptions())
+    return this.http.post(this.buildUrl('/forgot'), JSON.stringify(form), new JsonPostOptions())
       .map(this.jsonParser)
       .catch(this.errorTranslator);
   }
 
   resetPassword(form: PasswordResetRequest) {
-    return this.http.post('/change', JSON.stringify(form), new JsonPostOptions())
+    return this.http.post(this.buildUrl('/change'), JSON.stringify(form), new JsonPostOptions())
       .map(this.jsonParser)
       .catch(this.errorTranslator);
   }
 
   verifyEmailVerificationToken(sptoken: string) {
-    return this.http.get('/verify?sptoken=' + sptoken, new JsonGetOptions())
+    return this.http.get(this.buildUrl('/verify?sptoken=' + sptoken), new JsonGetOptions())
       .map(this.jsonParser)
       .catch(this.errorTranslator);
   }
 
   verifyPasswordResetToken(sptoken: string) {
-    return this.http.get('/change?sptoken=' + sptoken, new JsonGetOptions())
+    return this.http.get(this.buildUrl('/change?sptoken=' + sptoken), new JsonGetOptions())
       .map(this.jsonParser)
       .catch(this.errorTranslator);
+  }
+
+  private buildAppUrl(): string {
+    return this.baseUrl + '/client/v1/' + this.appId;
+  }
+
+  private buildUrl(suffix: string): string {
+    return (this.appId ? this.buildAppUrl() : '') + suffix;
   }
 
   /**
@@ -235,5 +296,15 @@ export class Stormpath {
     } catch (e) {
       throw new Error('Response was not JSON, check your server configuration');
     }
+  }
+
+  private accessTokenParser(json: any) {
+    console.log(json);
+
+    this.accessToken = json.access_token;
+    this.refreshToken = json.refresh_token;
+    localStorage.setItem('accessToken', this.accessToken);
+    localStorage.setItem('refreshToken', this.refreshToken);
+    return json;
   }
 }
