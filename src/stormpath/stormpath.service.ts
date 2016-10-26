@@ -107,7 +107,7 @@ export class Stormpath {
   /**
    * Attempts to get the current user by making a request of the /me endpoint.
    *
-   * @return {Observable<Account>}
+   * @return {Observable<Account | boolean>}
    * An observable that will return an Account if the user is logged in, or null
    * if the user is not logged in.
    */
