@@ -111,7 +111,7 @@ export class Stormpath {
    * An observable that will return an Account if the user is logged in, or null
    * if the user is not logged in.
    */
-  getAccount(): Observable<Account> {
+  getAccount(): Observable<Account | boolean> {
     return this.http.get('/me', new JsonGetOptions())
       .map(this.jsonParser)
       .map(this.accountTransformer)

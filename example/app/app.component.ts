@@ -1,8 +1,6 @@
-/// <reference path="../typings/tsd.d.ts" />
-
 import { Component, OnInit } from '@angular/core';
-import { HTTP_PROVIDERS }    from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
 
 import {
   Account,
@@ -34,10 +32,7 @@ import {
 
       </div>
     `,
-  providers: [HTTP_PROVIDERS, Stormpath],
-  directives: [
-    AuthPortComponent
-  ]
+  providers: [Stormpath]
 })
 export class AppComponent implements OnInit {
   private user$: Observable<Account | boolean>;

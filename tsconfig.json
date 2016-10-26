@@ -1,20 +1,33 @@
 {
   "compilerOptions": {
-    "noImplicitAny": true,
-    "suppressImplicitAnyIndexErrors": true,
+    "target": "es5",
     "module": "commonjs",
     "moduleResolution": "node",
-    "target": "ES5",
+    "sourceMap": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "sourceMap": true,
-    "declaration": true
+    "removeComments": false,
+    "noImplicitAny": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "typeRoots": [
+      "node_modules/@types",
+      "node_modules"
+    ],
+    "types": [
+      "es6-shim",
+      "jasmine",
+      "node",
+      "protractor",
+      "selenium-webdriver"
+    ]
   },
-  "files": [
-    "typings/index.d.ts",
-    "ng2-stormpath.ts"
-  ],
+  "compileOnSave": true,
   "exclude": [
-    "node_modules"
+    "node_modules/*",
+    "**/*-aot.ts",
+    "dist"
+  ],
+  "files": [
+    "ng2-stormpath.ts"
   ]
 }

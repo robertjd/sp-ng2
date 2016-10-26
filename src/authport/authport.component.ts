@@ -2,23 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
-// import {
-//   Account,
-//   EmailVerificationComponent,
-//   ForgotPasswordComponent,
-//   LoginComponent,
-//   LoginService,
-//   RegisterComponent,
-//   ResendEmailVerificationComponent,
-//   ResetPasswordComponent,
-//   Stormpath
-// } from '../../ng2-stormpath';
-
-import { Account } from '../shared/account';
-import { ForgotPasswordComponent } from '../forgot-password/forgot-password.component';
-import { LoginComponent } from '../login/login.component';
-import { RegisterComponent } from '../register/register.component';
 import { Stormpath, LoginService } from '../stormpath/stormpath.service';
+import { Account } from '../shared/account';
 
 @Component({
   selector: 'sp-authport',
@@ -67,15 +52,7 @@ import { Stormpath, LoginService } from '../stormpath/stormpath.service';
         </div>
       </div>
     `,
-  providers: [  LoginService],
-  directives: [
-    ForgotPasswordComponent,
-    LoginComponent,
-    RegisterComponent,
-  //   EmailVerificationComponent,
-  //   ResendEmailVerificationComponent,
-  //   ResetPasswordComponent
-  ]
+  providers: [LoginService]
 })
 @Injectable()
 export class AuthPortComponent implements OnInit {
@@ -85,16 +62,12 @@ export class AuthPortComponent implements OnInit {
   private register: boolean;
   protected forgot: boolean;
 
-
   constructor(public stormpath: Stormpath, public loginService: LoginService) {
-
-
-
     this.user$ = this.stormpath.user$;
     this.loggedIn$ = this.user$.map(user => !!user);
   }
-  ngOnInit() {
 
+  ngOnInit() {
     this.loginService.login = true;
     this.loginService.register = false;
     this.forgot = this.loginService.forgot;
