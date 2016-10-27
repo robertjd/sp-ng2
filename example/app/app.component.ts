@@ -4,14 +4,12 @@ import 'rxjs/add/operator/map';
 
 import {
   Account,
-  AuthPortComponent,
   Stormpath
-} from 'ng2-stormpath/ng2-stormpath';
+} from 'ng2-stormpath';
 
 @Component({
   selector: 'my-app',
   template: `
-
       <div class="container">
         <br/>
         <br/>
@@ -40,9 +38,8 @@ export class AppComponent implements OnInit {
   private login: boolean;
   private register: boolean;
 
-  constructor(public stormpath: Stormpath) {
+  constructor(public stormpath: Stormpath) {}
 
-  }
   ngOnInit() {
     this.login = true;
     this.register = false;

@@ -35,11 +35,9 @@
   },
   "peerDependencies": {},
   "devDependencies": {
-    "@types/es6-shim": "^0.31.32",
+    "@types/core-js": "^0.9.34",
     "@types/jasmine": "^2.5.35",
     "@types/node": "^6.0.38",
-    "@types/protractor": "^1.5.20",
-    "@types/selenium-webdriver": "2.44.*",
     "codelyzer": "0.0.28",
     "tslint": "^3.6.0",
     "typescript": "^2.0.6"

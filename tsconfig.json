@@ -14,11 +14,9 @@
       "node_modules"
     ],
     "types": [
-      "es6-shim",
+      "core-js",
       "jasmine",
-      "node",
-      "protractor",
-      "selenium-webdriver"
+      "node"
     ]
   },
   "compileOnSave": true,

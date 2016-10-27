@@ -63,13 +63,13 @@ app.use(stormpath.init(app, {
 /**
  * Now that our static file server and Stormpath are configured, we let Express
  * know that any other route that hasn't been defined should load the Angular
- * application.  It then becomes the responsiliby of the Angular application
- * to define all view routes, and rediret to the home page if the URL is not
+ * application.  It then becomes the responsibility of the Angular application
+ * to define all view routes, and redirect to the home page if the URL is not
  * defined.
  */
 app.route('/*')
   .get(function(req, res) {
-    res.sendFile(path.join(__dirname, '..', 'client','index.html'));
+    res.sendFile(path.join(__dirname, '..','index.html'));
   });
 
 /**
