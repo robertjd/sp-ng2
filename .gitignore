@@ -4,6 +4,7 @@ npm-debug.log
 
 # TypeScript
 *.js
+!systemjs.config.js
 *.map
 *.d.ts
 typings/**

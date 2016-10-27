@@ -4,14 +4,12 @@
   "scripts": {
     "lint": "tslint src/**/*.ts",
     "test": "tsc && karma start",
-    "postinstall": "typings install",
     "prepublish": "tsc",
-    "tsc": "tsc",
-    "typings": "typings"
+    "tsc": "tsc"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/stormpath/stormpath-sdk-angularjs2"
+    "url": "https://github.com/stormpath/stormpath-sdk-angular"
   },
   "author": {
     "name": "Stormpath",
@@ -23,25 +21,26 @@
   ],
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/stormpath/stormpath-sdk-angularjs2/issues"
+    "url": "https://github.com/stormpath/stormpath-sdk-angular/issues"
   },
   "main": "ng2-stormpath.js",
   "typings": "./ng2-stormpath.d.ts",
   "dependencies": {
-
+    "@angular/common": "2.1.1",
+    "@angular/core": "2.1.1",
+    "@angular/http": "2.1.1",
+    "@angular/platform-browser": "2.1.1",
+    "rxjs": "5.0.0-beta.12",
+    "zone.js": "0.6.26"
   },
-  "peerDependencies": {
-    "@angular/common": "2.0.0-rc.1",
-    "@angular/core": "2.0.0-rc.1",
-    "@angular/http": "2.0.0-rc.1",
-    "rxjs": "5.0.0-beta.6",
-    "zone.js": "^0.6.12"
-  },
+  "peerDependencies": {},
   "devDependencies": {
-    "codelyzer": "^0.0.20",
+    "@types/core-js": "^0.9.34",
+    "@types/jasmine": "^2.5.35",
+    "@types/node": "^6.0.38",
+    "codelyzer": "0.0.28",
     "tslint": "^3.6.0",
-    "typescript": "^1.8.10",
-    "typings": "^1.0.4"
+    "typescript": "^2.0.6"
   },
   "engines": {
     "node": ">=0.8.0"
